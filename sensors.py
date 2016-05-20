@@ -554,7 +554,8 @@ class PublicIPSensor(BaseSensor):
     name = 'publicip'
     desc = _("Display your public IP address")
 
-    command = 'curl ipv4.icanhazip.com'
+    # https://coderwall.com/p/lyrjsq/extract-your-external-ip-using-command-line-tools
+    command = 'dig +short myip.opendns.com @resolver1.opendns.com'
 
     current_ip = ""
     lasttime = 0  # we refresh this every 10 minutes
