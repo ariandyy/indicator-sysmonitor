@@ -561,7 +561,7 @@ class PublicIPSensor(BaseSensor):
     lasttime = 0  # we refresh this every 10 minutes
 
     def get_value(self, sensor):
-        if self.current_ip == "" or self.lasttime == 0 or (time.time() - self.lasttime) > 600:
+        if self.current_ip == "" or self.lasttime == 0 or (time.time() - self.lasttime) > 60:
             self.current_ip = self.script_exec(self.command)
             self.lasttime = time.time()
 
