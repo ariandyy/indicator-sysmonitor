@@ -558,14 +558,21 @@ class PublicIPSensor(BaseSensor):
     command = 'dig +short myip.opendns.com @resolver1.opendns.com'
 
     current_ip = ""
-    lasttime = 0  # we refresh this every 10 minutes
+    current_ip_loc = ""
+    lasttime = 0  # we refresh this every 10 minutes --> NOPE: 1 minute
+
+    def get_location(self, ip):
+        return self.script_exec('geoiplookup ' + ip + ' | cut -d " " -f 4 | tr -d ","'
+)
 
     def get_value(self, sensor):
         if self.current_ip == "" or self.lasttime == 0 or (time.time() - self.lasttime) > 60:
             self.current_ip = self.script_exec(self.command)
+            self.current_ip_loc = self.current_ip + ' - ' + self.get_location(self.current_ip)
             self.lasttime = time.time()
 
-        return self.current_ip
+        #return self.current_ip
+        return self.current_ip_loc
 
 
 class CPUTemp(BaseSensor):
